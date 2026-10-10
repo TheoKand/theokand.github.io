@@ -81,10 +81,10 @@ code { font-family: var(--mono); font-size: .88em; overflow-wrap: anywhere; }
   </ol>
 
   <h2>Install</h2>
-  <p>Agent Skills are an open format (<a href="https://agentskills.io">agentskills.io</a>): a folder with a <code>SKILL.md</code> file. Tools that support them include Claude, OpenAI Codex, GitHub Copilot, Cursor and Gemini CLI.</p>
+  <p>Agent Skills are an open format (<a href="https://agentskills.io">agentskills.io</a>): a folder with a <code>SKILL.md</code> file. Any agent or app that supports the format can use this skill.</p>
   <ul>
-    <li>Put the <code>podcast-deep-dive</code> folder in your tool's skills folder, for example <code>~/.claude/skills/</code> for Claude Code.</li>
-    <li>Apps that take uploads, like the Claude app (Settings → Capabilities → Skills), accept the .zip.</li>
+    <li>Put the <code>podcast-deep-dive</code> folder in your agent's skills folder. Your agent's docs say where that is.</li>
+    <li>If your app installs skills by upload, give it the .zip.</li>
     <li>Then paste a YouTube link and say “deep dive this”.</li>
   </ul>
 
