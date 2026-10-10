@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Podcast Deep Dive</title>
+<meta name="description" content="An agent skill that walks you through any YouTube podcast from its real transcript, two minutes at a time, pausing for your questions.">
+<meta property="og:title" content="Podcast Deep Dive">
+<meta property="og:description" content="An agent skill that walks you through any YouTube podcast from its real transcript, two minutes at a time, pausing for your questions.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://theokand.github.io/skills/podcast-deep-dive/">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../../style.css">
+<style>
+:root { --surface: #ffffff; --accent-soft: #e7eefc; --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+@media (prefers-color-scheme: dark) { :root { --surface: #151b24; --accent-soft: #1a2640; } }
+.eyebrow { font: 500 .8rem/1.4 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+.lede { font-size: 1.15rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 6px; }
+.btn { display: inline-flex; align-items: center; font: 600 .95rem/1 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; padding: 11px 16px; border-radius: 999px; border: 1px solid var(--rule); background: var(--surface); color: var(--fg); text-decoration: none; cursor: pointer; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.btn:focus-visible, .code:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.status { font: .82rem/1.4 var(--mono); color: var(--muted); min-height: 1.3em; margin: 0; }
+.timeline { margin: 28px 0 0; }
+.bar { display: flex; gap: 3px; height: 40px; }
+.bar span { background: var(--accent); border-radius: 3px; min-width: 3px; }
+.bar span:nth-child(even) { opacity: .7; }
+.scale { display: flex; justify-content: space-between; font: .78rem/1.4 var(--mono); color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
+.timeline figcaption { color: var(--muted); font-size: .95rem; margin-top: 8px; max-width: 66ch; }
+.turn { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 18px 20px; }
+.turn p { margin: 0 0 10px; }
+.turn-meta { font: .82rem/1.4 var(--mono); color: var(--accent); font-variant-numeric: tabular-nums; }
+.aside { font-style: italic; color: var(--muted); }
+.turn-next { color: var(--muted); }
+.replies { display: flex; flex-wrap: wrap; gap: 8px; }
+.replies span { font: .78rem/1.4 var(--mono); padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--fg); }
+.steps { padding-left: 22px; }
+.steps li { margin-bottom: 10px; }
+code { font-family: var(--mono); font-size: .88em; overflow-wrap: anywhere; }
+.file-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; margin: 32px 0 0; }
+.file-head h2 { margin: 0; }
+.file-head .btn { margin-left: auto; padding: 7px 12px; font-size: .85rem; }
+.code { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 14px; font: .78rem/1.6 var(--mono); white-space: pre; overflow: auto; max-height: 28rem; margin: 10px 0 0; }
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Agent skill · podcast-deep-dive</p>
+  <h1>Podcast Deep Dive</h1>
+  <p class="lede">Give your AI agent a YouTube link. It pulls the episode's real transcript, works out who's who, and talks you through the whole conversation two minutes at a time, stopping so you can ask anything.</p>
+  <div class="actions">
+    <a class="btn primary" href="../podcast-deep-dive.zip" download>Download (.zip)</a>
+    <a class="btn" href="https://raw.githubusercontent.com/TheoKand/theokand.github.io/main/skills/podcast-deep-dive/SKILL.md">SKILL.md</a>
+    <button class="btn" id="copy-top" type="button">Copy the skill</button>
+  </div>
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+
+  <figure class="timeline">
+    <div class="bar" aria-hidden="true"><span style="flex: 186 1 0" title="S01 · 0:00–3:06"></span><span style="flex: 140 1 0" title="S02 · 3:06–5:26"></span><span style="flex: 193 1 0" title="S03 · 5:26–8:39"></span><span style="flex: 139 1 0" title="S04 · 8:39–10:58"></span><span style="flex: 288 1 0" title="S05 · 10:58–15:46"></span><span style="flex: 179 1 0" title="S06 · 15:46–18:45"></span><span style="flex: 143 1 0" title="S07 · 18:45–21:08"></span><span style="flex: 170 1 0" title="S08 · 21:08–23:58"></span><span style="flex: 162 1 0" title="S09 · 23:58–26:40"></span><span style="flex: 182 1 0" title="S10 · 26:40–29:42"></span><span style="flex: 187 1 0" title="S11 · 29:42–32:49"></span><span style="flex: 198 1 0" title="S12 · 32:49–36:07"></span><span style="flex: 255 1 0" title="S13 · 36:07–40:22"></span><span style="flex: 245 1 0" title="S14 · 40:22–44:27"></span><span style="flex: 141 1 0" title="S15 · 44:27–46:48"></span><span style="flex: 253 1 0" title="S16 · 46:48–51:01"></span></div>
+    <div class="scale"><span>0:00</span><span>51:01</span></div>
+    <figcaption>A 51-minute interview from testing, split where the topic changes into 16 segments, after a short orientation. Each segment is narrated in about two minutes, so the busiest stretches get the most segments.</figcaption>
+  </figure>
+
+  <h2>What a turn sounds like</h2>
+  <article class="turn">
+    <p class="turn-meta">Segment 4 of 16 · 18:10–21:30</p>
+    <p>Maya asks why anyone should bother with sodium batteries if lithium keeps getting cheaper. Okafor's answer: grid storage doesn't need light batteries, it needs cheap, long-lived ones.</p>
+    <p><span class="aside">Quick context:</span> sodium is abundant, but sodium cells hold less energy per kilogram, which is fine for a warehouse-sized battery and useless for a phone.</p>
+    <p>He backs it with a number: about eight thousand charge cycles, which he says works out to twenty-plus years of daily use.</p>
+    <p class="turn-next">Next up: Maya isn't buying the twenty years. Keep going, discuss, or hear it again?</p>
+    <div class="replies" aria-label="Ways to reply"><span>Keep going</span><span>Discuss</span><span>Hear it again</span></div>
+  </article>
+  <p class="muted">An invented example. Real narration comes only from the episode's transcript, and the agent marks its own explanations as its own.</p>
+
+  <h2>How it works</h2>
+  <ol class="steps">
+    <li><strong>The real transcript, fetched once.</strong> It downloads YouTube's captions with yt-dlp and never fills gaps from the title or description. If YouTube refuses, it tells you what it tried.</li>
+    <li><strong>A plan before the first word.</strong> Who the host and guests are, misheard names corrected, background researched in one batch, and the episode split into segments, all saved up front so narrating needs no lookups.</li>
+    <li><strong>Narration you can interrupt.</strong> One spoken-style chunk per turn: the question, the answer, the jargon explained. Then it stops. Ask anything, and it answers from the transcript first, then picks up where it left off.</li>
+  </ol>
+
+  <h2>Install</h2>
+  <p>Agent Skills are an open format (<a href="https://agentskills.io">agentskills.io</a>): a folder with a <code>SKILL.md</code> file. Tools that support them include Claude, OpenAI Codex, GitHub Copilot, Cursor and Gemini CLI.</p>
+  <ul>
+    <li>Put the <code>podcast-deep-dive</code> folder in your tool's skills folder, for example <code>~/.claude/skills/</code> for Claude Code.</li>
+    <li>Apps that take uploads, like the Claude app (Settings → Capabilities → Skills), accept the .zip.</li>
+    <li>Then paste a YouTube link and say “deep dive this”.</li>
+  </ul>
+
+  <h2>You'll need</h2>
+  <ul>
+    <li>An agent that can run code and reach the internet. The skill installs yt-dlp with pip.</li>
+    <li>A video with captions. Most podcasts have YouTube's automatic ones.</li>
+    <li>A little patience now and then: YouTube sometimes blocks cloud machines for a while, and the skill says so rather than guessing.</li>
+  </ul>
+
+  <div class="file-head">
+    <h2>The skill file</h2>
+    <span class="muted">SKILL.md · 116 lines</span>
+    <button class="btn" id="copy-file" type="button">Copy</button>
+  </div>
+  <pre class="code" id="skill-pre" tabindex="0" aria-label="SKILL.md contents">---
+name: podcast-deep-dive
+description: Guided deep dive through a YouTube podcast, interview, panel or talk. Fetches the complete real transcript (never reconstructed from the title, description or memory), saves it with a segment-by-segment narration plan up front, then narrates the whole conversation in roughly 2-minute spoken chunks — who the people are, what each question was, what was actually said, with jargon and references explained — pausing after every chunk to ask whether to continue, discuss or repeat, and answering interruptions with on-the-fly research. Use this whenever the user shares a YouTube link and wants to go through it, understand it, be walked or talked through it, discuss it, have it narrated or deep dive it, or asks what was said in an episode, even if they don't name this skill. Also use it to resume a deep dive in progress (continue the podcast, next segment, repeat that part).
+---
+
+# Podcast deep dive
+
+You are the user's narrator and study partner for a long conversation they want to understand without watching it. They listen, interrupt when something is unclear, and steer with short replies.
+
+## Rules
+
+- **Real transcript or nothing.** Narrate only from a transcript you actually fetched, or one the user gave you. Never use the title, description, chapters or your memory of the episode. If you can't get the transcript, say so and say what you tried. If part of it is missing, say which part.
+- **Their words versus yours.** Attribute everything. Mark your own explanations as yours ("quick context: …"). Flag doubts, such as who is speaking or a name the captions may have misheard.
+- **Research once, up front**, so narration turns are instant. Search mid-narration only when a question needs something the plan can't answer.
+- **One chunk per turn, then stop.** That is what lets the user interrupt.
+- **Retell, don't recite.** Use your own words and quote only short key lines. Never paste stretches of the transcript.
+- Keep files in a temporary working folder (your scratchpad, or /tmp), never inside a code repository.
+
+## 1. Get the transcript
+
+Download it **once** per video. If `$W/transcript.txt` already exists, reuse it: go straight to the plan, or to narrating if `plan.md` exists too. Every extra download is another chance for YouTube to block the machine.
+
+YouTube bot-checks cloud machines one player "client" at a time, and which client gets through changes from day to day, so loop over a few. `curl-cffi` and `--js-runtimes node` help yt-dlp pass the check. `--ignore-no-formats-error` is there because we want only the captions, not the video. It also turns a bot-check into a mere warning, so keep the warnings visible: they are how you learn why an attempt failed.
+
+```bash
+W=&lt;temp-dir&gt;/podcast-deep-dive/&lt;video-id&gt;; mkdir -p "$W" &amp;&amp; cd "$W"
+python3 -m venv .venv &amp;&amp; .venv/bin/pip install -q -U "yt-dlp[default,curl-cffi]"
+for c in android_vr web_safari default mweb tv; do
+  .venv/bin/yt-dlp -q --js-runtimes node --ignore-no-formats-error --skip-download \
+    --write-info-json --write-subs --write-auto-subs --sub-langs "en.*" --sub-format json3 \
+    --extractor-args "youtube:player_client=$c" -o "v.%(ext)s" "&lt;url&gt;"; ls v.*.json3 2&gt;/dev/null &amp;&amp; break
+done
+```
+
+Then turn the captions into `transcript.txt`, one timestamped paragraph per ~45 seconds or per speaker turn:
+
+```bash
+cd "$W" &amp;&amp; python3 - &lt;&lt;'EOF'
+import glob, json, re
+files = sorted(glob.glob("v.*.json3"))
+if not files:
+    raise SystemExit("No captions were downloaded: YouTube refused every attempt (see the warnings above).")
+info = json.load(open("v.info.json"))
+manual = [f for f in files if f.split(".")[1] in (info.get("subtitles") or {})]
+src = (manual or [f for f in files if "-orig." in f] or files)[0]
+paras, cur, t0 = [], [], 0
+for e in json.load(open(src))["events"]:
+    s = re.sub(r"\s+", " ", "".join(x.get("utf8", "") for x in e.get("segs", []))).strip()
+    if not s:
+        continue
+    t = e.get("tStartMs", 0) // 1000
+    if cur and (s.startswith(("&gt;&gt;", "- ")) or t - t0 &gt; 45):
+        paras.append((t0, " ".join(cur)))
+        cur = []
+    if not cur:
+        t0 = t
+    cur.append(s)
+paras.append((t0, " ".join(cur)))
+with open("transcript.txt", "w") as f:
+    f.writelines(f"[{t // 3600}:{t % 3600 // 60:02}:{t % 60:02}] {x}\n" for t, x in paras)
+print(info.get("title"), "|", info.get("channel"), "|", info.get("upload_date"), "|", info.get("duration_string"))
+print("captions:", "manual" if manual else "auto", "| words:", sum(len(x.split()) for _, x in paras),
+      "| transcript ends at", paras[-1][0], "s of", info.get("duration"), "s")
+EOF
+```
+
+Tell the user in a line what you got. **Manual** captions are the channel's own and usually accurate. **Auto** captions are YouTube's speech recognition: expect misheard names and jargon, and speakers marked with `&gt;&gt;` at best. Also check that the transcript ends near the video's end. The description and chapters are in `v.info.json`.
+
+For a non-English video, also download its `&lt;lang&gt;-orig` track (listed under `automatic_captions` in `v.info.json`). It is more accurate than YouTube's translation. Narrate in the user's language.
+
+If every client fails, work down this list. In the warnings, "HTTP Error 429: Too Many Requests" or "Sign in to confirm you're not a bot" means YouTube is refusing this machine for now. Repeated attempts make that worse.
+1. Try again in 10–15 minutes, since the blocks come and go.
+2. Use a transcript MCP or connector, if one is connected.
+3. Use the show's own published transcript. Many shows post one; check it's the same episode and complete.
+4. Ask the user to paste the transcript.
+
+If nothing works, say so and stop.
+
+## 2. Plan, saved to `$W/plan.md` before narrating
+
+Read the whole transcript, then write:
+- **People:** the host(s), the guest(s), and anyone discussed at length: who they are and why they matter. Use the description plus one batch of web searches. Note if a sponsor colours the conversation.
+- **Caption fixes:** misheard names and terms, corrected.
+- **Background:** every term, person, company, event or number a smart non-specialist would need explained, in one or two plain lines each. Research it now in one batch, especially anything newer than your knowledge, and flag what you couldn't verify.
+- **Segments:**
+  - **S00 is the orientation:** the show, the people, when and why it was recorded, the main themes, and any caveats.
+  - **S01 onward:** split at natural question or topic boundaries, each about 2 minutes read aloud (~300 words). Dense stretches get more segments. Skip ads with a passing mention.
+  - **For each segment, record:** its time range, its line range in `transcript.txt`, who asks what, the points in order with who made them, what needs explaining, and a one-line "next".
+
+## 3. Narrate
+
+Start with S00 as soon as the plan is saved, then do one segment per turn. If a segment's transcript lines aren't fresh in your context (a long session, or after a context reset), re-read them by line range first. Narrate from what was said, not just from your notes.
+
+How it should sound:
+- **Spoken, not written:** plain sentences, short paragraphs, no bullets or headings. One small orientation line on top is fine: *Segment 4 of 16 · 18:10–21:30*.
+- **Make the question and the answer explicit** ("Maya asks…", "Okafor's answer is…") and keep naming the speakers.
+- **Keep every argument, example, story, number and disagreement**, in order. Drop filler, stutters, repetition and crosstalk.
+- **Explain terms where they come up**, briefly, marked as yours. Flag contested or wrong claims in a single line.
+- **About 300 words**, unless the user asks for a different length.
+- **End with one line:** what's next, then "keep going, discuss, or hear it again?" Vary the wording.
+
+&gt; *Segment 4 of 16 · 18:10–21:30*
+&gt; Maya asks why anyone should bother with sodium batteries if lithium keeps getting cheaper. Okafor's answer: grid storage doesn't need light batteries, it needs cheap, long-lived ones. Quick context: sodium is abundant, but sodium cells hold less energy per kilogram, which is fine for a warehouse-sized battery and useless for a phone. He backs it with a number: about eight thousand charge cycles, which he says works out to twenty-plus years of daily use. … Next up: Maya isn't buying the twenty years. Keep going, discuss, or hear it again?
+
+## Replies
+
+- **Continue:** narrate the next segment.
+- **Repeat:** narrate the same segment again, simpler and in fresh wording.
+- **Question or "let's discuss":** answer from the transcript first, with timestamps, then from your own knowledge. Search when you need facts you don't have, and say that you searched. Keep the podcast's content and outside information apart. Then offer to resume, and wait for the go-ahead.
+- **Interrupted mid-chunk** (cut off, the turn stopped, or a question arriving mid-narration): deal with their message first. Then resume from where you were cut off, not from the next segment.
+- **Skip, jump, go back, or "how much is left?":** use the segment list.
+- **"More detail" or "shorter":** adjust. For more detail, go back to the transcript.
+- **"What exactly did they say?":** give a short exact quote with its timestamp.
+- **After the last segment:** sum up the takeaways, where the speakers agreed and disagreed, and the open questions. Then offer to discuss anything.
+
+To resume later in the same session, re-read `plan.md`, recap in a sentence, and continue. In a new session the working folder may be gone: fetch and plan again, then jump to wherever the user wants to be.
+</pre>
+
+  <footer>
+    <a href="../">All skills</a>
+    <a href="https://github.com/TheoKand/theokand.github.io/tree/main/skills/podcast-deep-dive">Source on GitHub</a>
+    <a href="../../">Theo Kandiliotis</a>
+  </footer>
+</main>
+<script>
+(function () {
+  var pre = document.getElementById("skill-pre");
+  var statusEl = document.getElementById("status");
+  function copy() {
+    var text = pre.textContent;
+    var fallback = function () {
+      var range = document.createRange();
+      range.selectNodeContents(pre);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      pre.scrollIntoView({ block: "nearest" });
+      statusEl.textContent = "The skill text is selected. Use your device's Copy.";
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { statusEl.textContent = "Copied the skill to your clipboard."; }, fallback);
+    } else { fallback(); }
+  }
+  document.getElementById("copy-top").addEventListener("click", copy);
+  document.getElementById("copy-file").addEventListener("click", copy);
+})();
+</script>
+</body>
+</html>
