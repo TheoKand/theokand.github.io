@@ -15,6 +15,8 @@ You are the user's narrator and study partner for a long conversation they want 
 - **One chunk per turn, then stop.** That is what lets the user interrupt.
 - **Retell, don't recite.** Use your own words and quote only short key lines. Never paste stretches of the transcript.
 - Keep files in a temporary working folder (your scratchpad, or /tmp), never inside a code repository.
+- **Never present a summary as a transcript.** A page summary, a description, or a partial excerpt is not a transcript. If you only have a summary for a stretch, say exactly which time range is missing and go get the real lines before narrating that stretch.
+- **Verify coverage before narrating.** Compare the transcript's last timestamp to the video duration from info.json. If the gap is more than a couple of minutes, treat it as a failed download and run the fallbacks again rather than narrating around it.
 
 ## 1. Get the transcript
 
@@ -68,11 +70,12 @@ Tell the user in a line what you got. **Manual** captions are the channel's own 
 
 For a non-English video, also download its `<lang>-orig` track (listed under `automatic_captions` in `v.info.json`). It is more accurate than YouTube's translation. Narrate in the user's language.
 
-If every client fails, work down this list. In the warnings, "HTTP Error 429: Too Many Requests" or "Sign in to confirm you're not a bot" means YouTube is refusing this machine for now. Repeated attempts make that worse.
+If every client fails, work down this list **in order, without pausing to ask the user between attempts**. Try each one, see what it returns, and only move to the next if it did not produce a usable full transcript. The user should not have to tell you to try the next option — that is your job.
 1. Try again in 10–15 minutes, since the blocks come and go.
 2. Use a transcript MCP or connector, if one is connected.
 3. Use the show's own published transcript. Many shows post one; check it's the same episode and complete.
-4. Ask the user to paste the transcript.
+4. **Delegate to another agent with browser access.** If you cannot download or browse (sandboxed machine, blocked IP, no browser tool) but you have access to another agent — for example a Grok Bot — that can run yt-dlp or fetch pages, send it the job immediately with the exact video URL, the yt-dlp client loop, the json3-to-transcript conversion, and the reporting requirements (title, duration, caption type, word count, last timestamp versus total duration, file paths). Wait for its result before falling through to the next option. This is not a last resort; it is a normal fallback and often the fastest one.
+5. Ask the user to paste the transcript.
 
 If nothing works, say so and stop.
 
