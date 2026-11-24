@@ -74,8 +74,9 @@ If every client fails, work down this list **in order, without pausing to ask th
 1. Try again in 10–15 minutes, since the blocks come and go.
 2. Use a transcript MCP or connector, if one is connected.
 3. Use the show's own published transcript. Many shows post one; check it's the same episode and complete.
-4. **Delegate to another agent with browser access.** If you cannot download or browse (sandboxed machine, blocked IP, no browser tool) but you have access to another agent — for example a Grok Bot — that can run yt-dlp or fetch pages, send it the job immediately with the exact video URL, the yt-dlp client loop, the json3-to-transcript conversion, and the reporting requirements (title, duration, caption type, word count, last timestamp versus total duration, file paths). Wait for its result before falling through to the next option. This is not a last resort; it is a normal fallback and often the fastest one.
-5. Ask the user to paste the transcript.
+4. **Delegate to another agent with browser access.** If you cannot download or browse (sandboxed machine, blocked IP, no browser tool) but you have access to another agent — for example a Grok Bot — that can run yt-dlp or fetch pages, send it the job immediately with the exact video URL, the yt-dlp client loop, the json3-to-transcript conversion, and the reporting requirements (title, duration, caption type, word count, last timestamp versus total duration, file paths). Wait for its result before falling through to the next option. This is not a last resort; it is a normal fallback and often the fastest one. The delegated download must complete and be verified before any narration begins — no matter what.
+5. **Front agent owns narration; background agent only supplies browser access.** The front agent — the one the user is talking to — is solely responsible for narrating and answering questions. The background agent exists only to provide browser access when the front agent doesn't have it. All coordination between front and background agents must be explicit and confirmed before either starts work: the front agent sends the job, waits for the verified result, and only then narrates. Never let the background agent drive the conversation or start narrating on its own.
+6. Ask the user to paste the transcript.
 
 If nothing works, say so and stop.
 
