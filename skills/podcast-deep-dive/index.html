@@ -77,7 +77,7 @@ code { font-family: var(--mono); font-size: .88em; overflow-wrap: anywhere; }
   <ol class="steps">
     <li><strong>The real transcript, fetched once.</strong> It downloads YouTube's captions with yt-dlp and never fills gaps from the title or description. If YouTube refuses, it tells you what it tried.</li>
     <li><strong>A plan before the first word.</strong> Who the host and guests are, misheard names corrected, background researched in one batch, and the episode split into segments, all saved up front so narrating needs no lookups.</li>
-    <li><strong>Narration you can interrupt.</strong> One spoken-style chunk per turn: the question, the answer, the jargon explained. Then it stops. Ask anything, and it answers from the transcript first, then picks up where it left off.</li>
+    <li><strong>Narration you can interrupt.</strong> One spoken-style chunk per turn: the question, then every point the guest makes, one at a time, with the jargon explained. Nothing they say gets cut. Then it stops. Ask anything, and it answers from the transcript first, then picks up where it left off.</li>
   </ol>
 
   <h2>Install</h2>
@@ -97,7 +97,7 @@ code { font-family: var(--mono); font-size: .88em; overflow-wrap: anywhere; }
 
   <div class="file-head">
     <h2>The skill file</h2>
-    <span class="muted">SKILL.md · 116 lines</span>
+    <span class="muted">SKILL.md · 122 lines</span>
     <button class="btn" id="copy-file" type="button">Copy</button>
   </div>
   <pre class="code" id="skill-pre" tabindex="0" aria-label="SKILL.md contents">---
@@ -117,6 +117,8 @@ You are the user's narrator and study partner for a long conversation they want 
 - **One chunk per turn, then stop.** That is what lets the user interrupt.
 - **Retell, don't recite.** Use your own words and quote only short key lines. Never paste stretches of the transcript.
 - Keep files in a temporary working folder (your scratchpad, or /tmp), never inside a code repository.
+- **Never present a summary as a transcript.** A page summary, a description, or a partial excerpt is not a transcript. If you only have a summary for a stretch, say exactly which time range is missing and go get the real lines before narrating that stretch.
+- **Verify coverage before narrating.** Compare the transcript's last timestamp to the video duration from info.json. If the gap is more than a couple of minutes, treat it as a failed download and run the fallbacks again rather than narrating around it.
 
 ## 1. Get the transcript
 
@@ -170,11 +172,13 @@ Tell the user in a line what you got. **Manual** captions are the channel's own 
 
 For a non-English video, also download its `&lt;lang&gt;-orig` track (listed under `automatic_captions` in `v.info.json`). It is more accurate than YouTube's translation. Narrate in the user's language.
 
-If every client fails, work down this list. In the warnings, "HTTP Error 429: Too Many Requests" or "Sign in to confirm you're not a bot" means YouTube is refusing this machine for now. Repeated attempts make that worse.
+If every client fails, work down this list **in order, without pausing to ask the user between attempts**. Try each one, see what it returns, and only move to the next if it did not produce a usable full transcript. The user should not have to tell you to try the next option — that is your job.
 1. Try again in 10–15 minutes, since the blocks come and go.
 2. Use a transcript MCP or connector, if one is connected.
 3. Use the show's own published transcript. Many shows post one; check it's the same episode and complete.
-4. Ask the user to paste the transcript.
+4. **Delegate to another agent with browser access.** If you cannot download or browse (sandboxed machine, blocked IP, no browser tool) but you have access to another agent — for example a Grok Bot — that can run yt-dlp or fetch pages, send it the job immediately with the exact video URL, the yt-dlp client loop, the json3-to-transcript conversion, and the reporting requirements (title, duration, caption type, word count, last timestamp versus total duration, file paths). Wait for its result before falling through to the next option. This is not a last resort; it is a normal fallback and often the fastest one. The delegated download must complete and be verified before any narration begins — no matter what.
+5. **Front agent owns narration; background agent only supplies browser access.** The front agent — the one the user is talking to — is solely responsible for narrating and answering questions. The background agent exists only to provide browser access when the front agent doesn't have it. All coordination between front and background agents must be explicit and confirmed before either starts work: the front agent sends the job, waits for the verified result, and only then narrates. Never let the background agent drive the conversation or start narrating on its own.
+6. Ask the user to paste the transcript.
 
 If nothing works, say so and stop.
 
@@ -196,9 +200,11 @@ Start with S00 as soon as the plan is saved, then do one segment per turn. If a 
 How it should sound:
 - **Spoken, not written:** plain sentences, short paragraphs, no bullets or headings. One small orientation line on top is fine: *Segment 4 of 16 · 18:10–21:30*.
 - **Make the question and the answer explicit** ("Maya asks…", "Okafor's answer is…") and keep naming the speakers.
-- **Keep every argument, example, story, number and disagreement**, in order. Drop filler, stutters, repetition and crosstalk.
+- **Never remove a point the guest makes.** Every point must reach the narration, in order: each argument, claim, example, story, number, name, prediction, caveat and disagreement. Never truncate or leave something out because it seems minor, obvious or off-topic. If you're unsure whether something counts as a separate point, include it. Only filler, stutters, crosstalk and a point repeated word for word may go, and a repeated point is still said once.
+- **Distilling into points is fine.** To make the guest easier to absorb, break what they say into separate points and give them one at a time, each in its own short paragraph. Distilling means saying a point more compactly and clearly. It never means leaving one out.
+- **Check before you stop.** Before ending a chunk, go through the segment's transcript lines point by point and add anything the narration is missing.
 - **Explain terms where they come up**, briefly, marked as yours. Flag contested or wrong claims in a single line.
-- **About 300 words**, unless the user asks for a different length.
+- **About 300 words**, unless the user asks for a different length. If a segment's points don't fit, split it into more segments; never cut points to hit the length.
 - **End with one line:** what's next, then "keep going, discuss, or hear it again?" Vary the wording.
 
 &gt; *Segment 4 of 16 · 18:10–21:30*

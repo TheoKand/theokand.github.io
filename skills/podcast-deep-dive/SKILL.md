@@ -98,9 +98,11 @@ Start with S00 as soon as the plan is saved, then do one segment per turn. If a 
 How it should sound:
 - **Spoken, not written:** plain sentences, short paragraphs, no bullets or headings. One small orientation line on top is fine: *Segment 4 of 16 · 18:10–21:30*.
 - **Make the question and the answer explicit** ("Maya asks…", "Okafor's answer is…") and keep naming the speakers.
-- **Keep every argument, example, story, number and disagreement**, in order. Drop filler, stutters, repetition and crosstalk.
+- **Never remove a point the guest makes.** Every point must reach the narration, in order: each argument, claim, example, story, number, name, prediction, caveat and disagreement. Never truncate or leave something out because it seems minor, obvious or off-topic. If you're unsure whether something counts as a separate point, include it. Only filler, stutters, crosstalk and a point repeated word for word may go, and a repeated point is still said once.
+- **Distilling into points is fine.** To make the guest easier to absorb, break what they say into separate points and give them one at a time, each in its own short paragraph. Distilling means saying a point more compactly and clearly. It never means leaving one out.
+- **Check before you stop.** Before ending a chunk, go through the segment's transcript lines point by point and add anything the narration is missing.
 - **Explain terms where they come up**, briefly, marked as yours. Flag contested or wrong claims in a single line.
-- **About 300 words**, unless the user asks for a different length.
+- **About 300 words**, unless the user asks for a different length. If a segment's points don't fit, split it into more segments; never cut points to hit the length.
 - **End with one line:** what's next, then "keep going, discuss, or hear it again?" Vary the wording.
 
 > *Segment 4 of 16 · 18:10–21:30*
